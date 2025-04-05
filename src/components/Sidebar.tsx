@@ -7,8 +7,8 @@ import {
   LayoutDashboard,
   FileText,
   Pill,
-  Stethoscope,
-  Ambulance,
+  // Stethoscope,
+  // Ambulance,
 } from "lucide-react";
 
 const navigation = [

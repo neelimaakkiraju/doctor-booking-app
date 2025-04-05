@@ -38,7 +38,7 @@ export default function Calendar() {
   });
   const [showPopover, setShowPopover] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout>(null);
 
   useEffect(() => {
     const storedAppointments = localStorage.getItem(STORAGE_KEY);
@@ -127,7 +127,7 @@ export default function Calendar() {
   };
 
   const handleDeleteAppointment = (id: string) => {
-    const appointment = appointments.find((app) => app.id === id);
+    // const appointment = appointments.find((app) => app.id === id);
     setAppointments(appointments.filter((app) => app.id !== id));
     setShowAppointmentsModal(false);
     toast.success("Appointment deleted successfully!", {
