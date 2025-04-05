@@ -196,126 +196,143 @@ export default function Calendar() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="bg-gradient-to-b from-gray-50 to-gray-100">
       <Toaster />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg overflow-hidden border border-gray-100/50">
-          {/* Calendar Header */}
-          <div className="bg-gradient-to-r from-gray-900 to-gray-800 px-6 py-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold text-white tracking-tight">
-                {format(currentDate, "MMMM yyyy")}
-              </h2>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() =>
-                    setCurrentDate(
-                      new Date(
-                        currentDate.getFullYear(),
-                        currentDate.getMonth() - 1
-                      )
+      <div className="bg-white/90 backdrop-blur-xl rounded-xl shadow-lg overflow-hidden border border-gray-100/50">
+        {/* Calendar Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-white tracking-tight">
+              {format(currentDate, "MMMM yyyy")}
+            </h2>
+            <div className="flex space-x-2">
+              <button
+                onClick={() =>
+                  setCurrentDate(
+                    new Date(
+                      currentDate.getFullYear(),
+                      currentDate.getMonth() - 1
                     )
-                  }
-                  className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200"
+                  )
+                }
+                className="p-1.5 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-                <button
-                  onClick={() =>
-                    setCurrentDate(
-                      new Date(
-                        currentDate.getFullYear(),
-                        currentDate.getMonth() + 1
-                      )
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <button
+                onClick={() =>
+                  setCurrentDate(
+                    new Date(
+                      currentDate.getFullYear(),
+                      currentDate.getMonth() + 1
                     )
-                  }
-                  className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200"
+                  )
+                }
+                className="p-1.5 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-              </div>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
+        </div>
+        {/* Calendar Grid */}
+        <div className="p-3">
+          <div className="grid grid-cols-7 gap-2">
+            {/* Weekday Headers */}
+            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+              <div
+                key={day}
+                className="text-center text-xs font-medium text-gray-500"
+              >
+                {day}
+              </div>
+            ))}
+            {/* Calendar Days */}
+            {daysInMonth.map((day) => {
+              const dayAppointments = getAppointmentsForDate(day);
+              const isSelected = selectedDate && isSameDay(day, selectedDate);
+              const isCurrentMonth = isSameMonth(day, currentDate);
+              const isToday = isSameDay(day, new Date());
 
-          {/* Calendar Grid */}
-          <div className="p-6">
-            <div className="grid grid-cols-7 gap-2">
-              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+              return (
                 <div
-                  key={day}
-                  className="text-center font-medium text-gray-500 py-2 text-sm"
+                  key={day.toString()}
+                  className={`relative aspect-square rounded-lg transition-all duration-200 ${
+                    isCurrentMonth
+                      ? "bg-white/80 hover:bg-white"
+                      : "bg-gray-50/50 text-gray-400"
+                  } ${
+                    isSelected
+                      ? "ring-2 ring-blue-500 bg-blue-50/80"
+                      : isToday
+                      ? "ring-2 ring-green-500 bg-green-50/80"
+                      : "hover:ring-1 hover:ring-gray-200"
+                  }`}
+                  onClick={() => handleDateClick(day)}
+                  onMouseEnter={(e) => handleDateHover(day, e)}
+                  onMouseLeave={handleDateLeave}
                 >
-                  {day}
-                </div>
-              ))}
-              {daysInMonth.map((day) => {
-                const dayAppointments = getAppointmentsForDate(day);
-                const isToday = isSameDay(day, new Date());
-                return (
-                  <div
-                    key={day.toString()}
-                    onClick={() => handleDateClick(day)}
-                    onMouseEnter={(e) => handleDateHover(day, e)}
-                    onMouseLeave={handleDateLeave}
-                    className={`p-3 h-28 rounded-xl cursor-pointer transition-all duration-200 ${
-                      isSameMonth(day, currentDate)
-                        ? isToday
-                          ? "bg-blue-500 text-white shadow-lg"
-                          : "bg-white/50 hover:bg-white/80 border border-gray-100/50"
-                        : "bg-gray-50/50 text-gray-400"
-                    }`}
-                  >
-                    <div
-                      className={`text-sm font-medium ${
-                        isToday ? "text-white" : "text-gray-700"
+                  <div className="flex h-full flex-col p-1.5">
+                    <span
+                      className={`text-lg font-semibold ${
+                        isCurrentMonth
+                          ? isToday
+                            ? "text-green-600"
+                            : "text-gray-800"
+                          : "text-gray-400"
                       }`}
                     >
                       {format(day, "d")}
-                    </div>
+                    </span>
                     {dayAppointments.length > 0 && (
-                      <div className="mt-2">
-                        <div
-                          className={`text-xs rounded-full px-2 py-1 inline-block ${
-                            isToday
-                              ? "bg-white/20 text-white"
-                              : "bg-blue-500/10 text-blue-600"
-                          }`}
-                        >
-                          {dayAppointments.length} appointment
-                          {dayAppointments.length > 1 ? "s" : ""}
+                      <div className="mt-0.5 flex-1 overflow-hidden">
+                        <div className="h-full space-y-0.5">
+                          {dayAppointments.slice(0, 2).map((appointment) => (
+                            <div
+                              key={appointment.id}
+                              className="rounded bg-blue-50/80 px-1 py-0.5 text-[10px] text-blue-700"
+                            >
+                              {appointment.time}
+                            </div>
+                          ))}
+                          {dayAppointments.length > 2 && (
+                            <div className="rounded bg-gray-100/80 px-1 py-0.5 text-[10px] text-gray-500">
+                              +{dayAppointments.length - 2} more
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
