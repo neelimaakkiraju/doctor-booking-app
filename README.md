@@ -22,7 +22,7 @@ A modern web application for booking doctor appointments, built with Next.js and
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/doctor-booking-app.git
+git clone https://github.com/neelimaakkiraju/doctor-booking-app.git
 cd doctor-booking-app
 ```
 
@@ -65,12 +65,20 @@ yarn dev
 ```
 src/
   ├── app/
+  │   ├── dashboard/
+  │   │   └── page.tsx
+  │   ├── prescriptions/
+  │   │   └── page.tsx
+  │   ├── records/
+  │   │   └── page.tsx
+  │   ├── favicon.ico
+  │   ├── globals.css
   │   ├── layout.tsx
   │   └── page.tsx
   ├── components/
-  │   └── Calendar.tsx
-  └── styles/
-      └── globals.css
+  │   ├── Calendar.tsx
+  │   └── Sidebar.tsx
+
 ```
 
 ## Contributing
